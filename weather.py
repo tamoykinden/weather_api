@@ -2,6 +2,7 @@ import argparse
 import sys
 
 from config import BaseConfig
+from exceptions import WeatherAPIError
 from logger import setup_logger
 from weather_api_client import WeatherAPIClient
 
@@ -34,8 +35,20 @@ def main():
         print(f'Температура: {weather.temperature}°C')
         print(f'Описание: {weather.description}\n')
 
+    except WeatherAPIError as e:
+        logger.error(f'Ошибка: {e.message}')
+
+        if e.status_code == 404:
+            print(f'\nОшибка: Город "{args.city}" не найден. Проверьте название.\n')
+        elif e.status_code == 401:
+            print('\nОшибка: Неверный API ключ. Проверьте файл .env\n')
+        else:
+            print(f'\nОшибка: {e.message}\n')
+        sys.exit(1)
+
     except Exception as e:
-        logger.error(f'Ошибка при получении погоды: {e}')
+        logger.error(f'Неожиданная ошибка: {e}')
+        print(f'\nНеожиданная ошибка: {e}\n')
         sys.exit(1)
 
 if __name__ == '__main__':
