@@ -12,7 +12,7 @@ cd weather_test
 
 2. Создайте виртуальное окружение:
 ```bash
-python -m venv venv
+python -m venv .venv
 source venv/bin/activate
 ```
 
@@ -28,7 +28,7 @@ WEATHER_API_KEY=ваш_ключ
 
 5. Запуск
 ```bash
-python weather.py <город>
+python3 weather.py <город>
 ```
 
 Пример:
